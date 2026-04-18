@@ -9,34 +9,75 @@ IMAGE_ROOT = Path("images")
 
 st.markdown("""
 <style>
-
 .stApp {
     background: linear-gradient(135deg, #101014 0%, #17171d 55%, #1f1a1a 100%);
 }
-
-/* 전체 글씨 */
-.stMarkdown, .stText {
-    color: #f5efe6 !important;
+.block-container {
+    padding-top: 1.2rem;
+    padding-bottom: 1.5rem;
+    max-width: 1450px;
 }
-
-/* 채팅 텍스트 */
+.top-title {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+}
+.top-title h1 {
+    margin: 0;
+    color: #f7f2ea;
+    font-size: 2.4rem;
+}
+.top-title p {
+    margin: 8px 0 0 0;
+    color: #d9d0c4;
+    font-size: 1rem;
+}
+.side-card, .status-card, .chat-header, .big-image-wrap {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+.affection-box {
+    background: rgba(255,90,120,0.08);
+    border: 1px solid rgba(255,90,120,0.18);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-top: 8px;
+}
+.tip {
+    color: #d2c8bc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.small-status {
+    color: #efe6d8;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+.event-box {
+    background: rgba(255,215,120,0.08);
+    border: 1px solid rgba(255,215,120,0.16);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    color: #f6e7ca;
+}
 [data-testid="stChatMessageContent"] {
     color: #f8f3ea !important;
-    font-size: 1.05rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
 }
-
-/* 이름 색 */
 [data-testid="stChatMessageContent"] strong {
-    color: #ff8fa3 !important;
+    color: #ffcf8b !important;
 }
-
-/* 입력창 */
 input {
     color: white !important;
 }
-
 </style>
-""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 .stApp {
     background: linear-gradient(135deg, #101014 0%, #17171d 55%, #1f1a1a 100%);
@@ -522,37 +563,37 @@ with right:
             messages.append({"role": "assistant", "content": reply_text})
             st.rerun()
 
-    if not st.session_state.awaiting_name_input[char_name]:
-        user_input = st.chat_input("메시지를 입력하세요...")
+if not st.session_state.awaiting_name_input[char_name]:
+    user_input = st.chat_input("메시지를 입력하세요...")
 
-if user_input:
-    maybe_store_memory(char_name, user_input)
-    messages.append({"role": "user", "content": user_input})
+    if user_input:
+        maybe_store_memory(char_name, user_input)
+        messages.append({"role": "user", "content": user_input})
 
-    delta = affection_delta(char_name, user_input)
-    new_affection = max(0, min(100, affection + delta))
-    st.session_state.affection[char_name] = new_affection
+        delta = affection_delta(char_name, user_input)
+        new_affection = max(0, min(100, affection + delta))
+        st.session_state.affection[char_name] = new_affection
 
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+        client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-    system_prompt = build_system_prompt(
-        char_name,
-        new_affection,
-        st.session_state.memory[char_name],
-        st.session_state.player_name
-    )
-
-    with st.spinner(f"{char_name} 답변 생성 중..."):
-        response = client.chat.completions.create(
-            model="gpt-4.1-mini",
-            temperature=0.7,
-            max_tokens=280,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                *messages[-12:]
-            ],
+        system_prompt = build_system_prompt(
+            char_name,
+            new_affection,
+            st.session_state.memory[char_name],
+            st.session_state.player_name
         )
-        reply = response.choices[0].message.content or "..."
 
-    messages.append({"role": "assistant", "content": reply})
-    st.rerun()
+        with st.spinner(f"{char_name} 답변 생성 중..."):
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                temperature=0.7,
+                max_tokens=280,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    *messages[-12:]
+                ],
+            )
+            reply = response.choices[0].message.content or "..."
+
+        messages.append({"role": "assistant", "content": reply})
+        st.rerun()
