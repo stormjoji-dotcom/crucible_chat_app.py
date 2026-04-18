@@ -497,33 +497,34 @@ with right:
         user_input = st.chat_input("메시지를 입력하세요...")
 
         if user_input:
+    maybe_store_memory(char_name, user_input)
+    messages.append({"role": "user", "content": user_input})
 
-            maybe_store_memory(char_name, user_input)
-            messages.append({"role": "user", "content": user_input})
+    delta = affection_delta(char_name, user_input)
+    new_affection = max(0, min(100, affection + delta))
+    st.session_state.affection[char_name] = new_affection
 
-            delta = affection_delta(char_name, user_input)
-            new_affection = max(0, min(100, affection + delta))
-            st.session_state.affection[char_name] = new_affection
+    # 👉 여기가 핵심 (같은 들여쓰기!)
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-          client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-            system_prompt = build_system_prompt(
-                char_name,
-                new_affection,
-                st.session_state.memory[char_name],
-                st.session_state.player_name
-            )
+    system_prompt = build_system_prompt(
+        char_name,
+        new_affection,
+        st.session_state.memory[char_name],
+        st.session_state.player_name
+    )
 
-            with st.spinner(f"{char_name} 답변 생성 중..."):
-                response = client.chat.completions.create(
-                    model="gpt-4.1-mini",
-                    temperature=0.7,
-                    max_tokens=280,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *messages[-12:]
-                    ],
-                )
-                reply = response.choices[0].message.content or "..."
+    with st.spinner(f"{char_name} 답변 생성 중..."):
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",
+            temperature=0.7,
+            max_tokens=280,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                *messages[-12:]
+            ],
+        )
+        reply = response.choices[0].message.content or "..."
 
-            messages.append({"role": "assistant", "content": reply})
-            st.rerun()
+    messages.append({"role": "assistant", "content": reply})
+    st.rerun()
