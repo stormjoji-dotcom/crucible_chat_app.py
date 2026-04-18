@@ -9,6 +9,56 @@ IMAGE_ROOT = Path("images")
 
 st.markdown("""
 <style>
+
+/* 전체 기본 글씨 */
+.stMarkdown, .stText {
+    color: #f5efe6 !important;
+}
+
+/* 채팅 메시지 (AI) */
+[data-testid="stChatMessageContent"] {
+    color: #f8f3ea !important;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* 캐릭터 이름 (굵게 표시된 부분) */
+[data-testid="stChatMessageContent"] strong {
+    color: #ff8fa3 !important;  /* 핑크톤 (감정 강조) */
+    font-size: 1.1rem;
+}
+
+/* 사용자 이름 */
+[data-testid="stChatMessageContent"] .user strong {
+    color: #7ecbff !important;
+}
+
+/* 강조 텍스트 */
+[data-testid="stChatMessageContent"] em {
+    color: #ffd580 !important;
+    font-style: normal;
+}
+
+/* 채팅 박스 배경 더 또렷하게 */
+[data-testid="stChatMessage"] {
+    background-color: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 6px;
+}
+
+/* 입력창 글씨 */
+input, textarea {
+    color: #ffffff !important;
+}
+
+/* 플레이스홀더 */
+::placeholder {
+    color: #999 !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 .stApp {
     background: linear-gradient(135deg, #101014 0%, #17171d 55%, #1f1a1a 100%);
 }
