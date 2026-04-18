@@ -496,7 +496,7 @@ with right:
     if not st.session_state.awaiting_name_input[char_name]:
         user_input = st.chat_input("메시지를 입력하세요...")
 
-    if user_input:
+if user_input:
     maybe_store_memory(char_name, user_input)
     messages.append({"role": "user", "content": user_input})
 
@@ -526,4 +526,4 @@ with right:
         reply = response.choices[0].message.content or "..."
 
     messages.append({"role": "assistant", "content": reply})
-    st.rerun()   
+    st.rerun()
