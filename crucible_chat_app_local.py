@@ -1,6 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 from pathlib import Path
+import os
 
 st.set_page_config(page_title="시련 인터랙션", page_icon="🎭", layout="wide")
 
@@ -230,8 +231,6 @@ def ensure_state():
         st.session_state.affection = {}
     if "memory" not in st.session_state:
         st.session_state.memory = {}
-    if "api_key" not in st.session_state:
-        st.session_state.api_key = ""
     if "player_name" not in st.session_state:
         st.session_state.player_name = ""
     if "name_event_done" not in st.session_state:
@@ -369,13 +368,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("## 설정")
-    st.session_state.api_key = st.text_input(
-        "OpenAI API Key",
-        type="password",
-        value=st.session_state.api_key,
-        placeholder="sk-..."
-    )
 
     char_name = st.selectbox("캐릭터 선택", list(CHARACTERS.keys()))
     ensure_character_state(char_name)
@@ -505,9 +497,6 @@ with right:
         user_input = st.chat_input("메시지를 입력하세요...")
 
         if user_input:
-            if not st.session_state.api_key:
-                st.error("OpenAI API Key를 먼저 입력해줘.")
-                st.stop()
 
             maybe_store_memory(char_name, user_input)
             messages.append({"role": "user", "content": user_input})
@@ -516,7 +505,7 @@ with right:
             new_affection = max(0, min(100, affection + delta))
             st.session_state.affection[char_name] = new_affection
 
-            client = OpenAI(api_key=st.session_state.api_key)
+          client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
             system_prompt = build_system_prompt(
                 char_name,
                 new_affection,
