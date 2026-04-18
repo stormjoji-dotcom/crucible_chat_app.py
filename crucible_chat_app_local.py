@@ -25,7 +25,7 @@ st.markdown("""
     font-size: 1.05rem;
 }
 
-/* 이름 */
+/* 이름 색 */
 [data-testid="stChatMessageContent"] strong {
     color: #ff8fa3 !important;
 }
@@ -36,6 +36,7 @@ input {
 }
 
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 .stApp {
     background: linear-gradient(135deg, #101014 0%, #17171d 55%, #1f1a1a 100%);
