@@ -8,7 +8,11 @@ try:
 except Exception:
     OpenAI = None
 
-(page_title="시련 인터랙션", page_icon="🎭", layout="wide")
+st.set_page_config(
+    page_title="시련 인터랙션",
+    page_icon="🎭",
+    layout="wide"
+)
 
 IMAGE_ROOT = Path("images")
 BACKGROUND_ROOT = Path("backgrounds")
