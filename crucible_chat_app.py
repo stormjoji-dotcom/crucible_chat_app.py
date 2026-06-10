@@ -627,7 +627,6 @@ ELIZABETH_STORY =
             },
         ],
     },
-}
 
 
 def get_stage(value: int) -> str:
