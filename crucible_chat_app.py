@@ -530,7 +530,7 @@ PROCTOR_STORY = [
     },
 ]
 
-ELIZABETH_STORY = [
+ELIZABETH_STORY =
     {
         "chapter": "Chapter 1. 조용한 상처",
         "summary": "엘리자베스의 절제된 말과 상처를 이해하는 시작 장.",
