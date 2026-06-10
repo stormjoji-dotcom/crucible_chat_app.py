@@ -627,10 +627,10 @@ ELIZABETH_STORY = [
                     {"label": "당신의 삶엔 평온도 다시 올 거야.", "delta": 10},
                     {"label": "용서는 이미 시작됐어.", "delta": 8},
                     {"label": "그냥 혼자 사는 게 나을지도.", "delta": -8},
-                ],
-            },
+                },
         ],
     },
+]
 
 
 def get_stage(value: int) -> str:
