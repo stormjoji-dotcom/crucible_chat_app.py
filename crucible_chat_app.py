@@ -615,7 +615,7 @@ ELIZABETH_STORY = [
                     {"label": "스스로를 너무 봐줘도 독이야.", "delta": -6},
                 ],
             },
-            {
+                       {
                 "title": "남겨진 봄",
                 "location": "들판",
                 "background": "farmhouse.jpg",
@@ -627,7 +627,8 @@ ELIZABETH_STORY = [
                     {"label": "당신의 삶엔 평온도 다시 올 거야.", "delta": 10},
                     {"label": "용서는 이미 시작됐어.", "delta": 8},
                     {"label": "그냥 혼자 사는 게 나을지도.", "delta": -8},
-                },
+                ],
+            },
         ],
     },
 ]
