@@ -2,14 +2,11 @@ import random
 from pathlib import Path
 
 import streamlit as st
-st.set_page_config(page_title="test", page_icon="🎭", layout="wide")
-st.title("시련 인터랙션 테스트")
-st.write("앱이 정상적으로 켜졌습니다.")
+
 try:
     from openai import OpenAI
 except Exception:
     OpenAI = None
-
 
 st.set_page_config(page_title="시련 인터랙션", page_icon="🎭", layout="wide")
 
